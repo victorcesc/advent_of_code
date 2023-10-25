@@ -1,0 +1,56 @@
+
+use std::io::{self};
+
+
+// get the most caloric elf bag
+
+pub fn get_max_fast<'a, I>(lines : I) -> i32 where
+I: Iterator<Item = io::Result<String>> + 'a,{
+    let mut cal_vec = Vec::<i32>::new();
+    let mut sum_cal = 0;
+    for line in lines {
+        if let Ok(calories) = line {
+            //maior mantem menor descarta a cada vez que soma
+            if !calories.is_empty() {
+                cal_vec.push(calories.parse::<i32>().unwrap()); //strint to int
+            }else{
+                if sum_cal < cal_vec.iter().sum::<i32>() {
+                    sum_cal = cal_vec.iter().sum::<i32>();
+                }
+                cal_vec.clear();
+            }
+        }
+    }
+    sum_cal//returning
+}
+
+
+//get the three most caloric values of elf bags
+
+pub fn three_most_caloric<'a, I>(lines : I) -> i32 where
+I: Iterator<Item = io::Result<String>> + 'a, {
+
+    let mut cal_vec = Vec::<i32>::new();
+    let mut three_values = Vec::<i32>::new();
+    
+    
+    for line in lines {
+        if let Ok(calories) = line {
+            //maior mantem menor descarta a cada vez que soma
+            if !calories.is_empty() {
+                cal_vec.push(calories.parse::<i32>().unwrap()); //strint to int
+            }else{
+                three_values.push(cal_vec.iter().sum::<i32>());
+                cal_vec.clear();
+            }
+        }
+    }
+
+    //println!("{:?}", three_values);
+    three_values.sort();
+    let total = three_values.iter().rev().take(3).sum::<i32>();
+    println!("{}",three_values.iter().rev().take(3).sum::<i32>()); 
+    //get three last elements from vec
+    total
+
+}
